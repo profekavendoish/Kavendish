@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0b12">
+  <meta name="color-scheme" content="dark">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Kavendish">
+  <title>Kavendish Finder</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- ============ PANTALLA 1: entrar ============ -->
+  <main id="pantalla-inicio" class="pantalla">
+    <h1>Kavendish <span class="acento">Finder</span></h1>
+    <p class="sub">Una flecha que te lleva hasta tus amigos en el festival.</p>
+
+    <form id="form-inicio" autocomplete="off">
+      <label for="nombre">Tu nombre</label>
+      <input id="nombre" name="nombre" maxlength="20" placeholder="Ej.: Juan" required>
+
+      <p id="aviso-sala" class="nota" hidden></p>
+
+      <button id="btn-entrar" type="submit" class="primario">Crear sala nueva</button>
+
+      <details id="detalle-codigo">
+        <summary>¿Ya tienes un código de sala?</summary>
+        <label for="codigo">Código o enlace</label>
+        <input id="codigo" name="codigo" placeholder="Pega aquí el código o el enlace">
+      </details>
+    </form>
+
+    <p class="nota">
+      Al entrar te pediremos permiso de <b>ubicación</b> y <b>brújula</b>.
+      Solo la gente con tu enlace ve tu posición, y no se guarda historial.
+    </p>
+    <p id="aviso-config" class="error" hidden></p>
+    <p class="nota"><a href="?demo=1">Probar en modo demostración</a></p>
+  </main>
+
+  <!-- ============ PANTALLA 2: sala ============ -->
+  <main id="pantalla-sala" class="pantalla" hidden>
+    <header class="barra">
+      <div>
+        <div class="etiqueta">Sala</div>
+        <div id="sala-codigo" class="codigo">—</div>
+      </div>
+      <div id="estado-conexion" class="estado" role="status" aria-live="polite">
+        <span class="punto"></span><span id="estado-texto">Conectando…</span>
+      </div>
+    </header>
+
+    <section id="banner-permisos" class="banner" hidden>
+      <p id="banner-texto">Activa la ubicación y la brújula para ver las flechas.</p>
+      <button id="btn-activar" type="button" class="primario">Activar ubicación y brújula</button>
+    </section>
+
+    <section id="lista" class="lista" aria-label="Tus amigos">
+      <p id="vacio" class="vacio">
+        Todavía no hay nadie más en la sala.<br>
+        Toca <b>Invitar</b> y envía el enlace a tus amigos.
+      </p>
+    </section>
+
+    <p id="mi-estado" class="mi-estado"></p>
+
+    <nav class="acciones" aria-label="Acciones">
+      <button id="btn-invitar" type="button" class="primario">Invitar amigos</button>
+      <button id="btn-punto" type="button">📍 Marcar punto de encuentro</button>
+      <button id="btn-enviar" type="button">Enviar mi ubicación (WhatsApp/SMS)</button>
+      <div class="fila">
+        <button id="btn-ahorro" type="button" class="interruptor" aria-pressed="false">Modo ahorro</button>
+        <button id="btn-pausa" type="button" class="interruptor" aria-pressed="false">Pausar compartir</button>
+      </div>
+      <button id="btn-salir" type="button" class="peligro">Salir de la sala</button>
+    </nav>
+
+    <p class="nota pie">
+      Mantén esta pantalla abierta: con el teléfono bloqueado la página no puede
+      enviar tu posición (tus amigos verán tu última posición y su antigüedad).
+      Cerca de altavoces o metales la brújula puede desviarse.
+    </p>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <!-- Plantilla de la flecha (se clona para cada amigo) -->
+  <template id="tpl-tarjeta">
+    <article class="tarjeta">
+      <div class="brujula">
+        <svg class="flecha" viewBox="0 0 100 100" aria-hidden="true">
+          <circle cx="50" cy="50" r="46" class="anillo"/>
+          <path d="M50 10 L72 62 L50 52 L28 62 Z" class="punta"/>
+        </svg>
+        <span class="norte" aria-hidden="true">N</span>
+      </div>
+      <div class="datos">
+        <div class="nombre"></div>
+        <div class="distancia"></div>
+        <div class="detalle"></div>
+      </div>
+      <button type="button" class="quitar" hidden aria-label="Quitar punto de encuentro">✕</button>
+    </article>
+  </template>
+
+  <script src="vendor/supabase.js"></script>
+  <script src="config.js"></script>
+  <script src="geo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

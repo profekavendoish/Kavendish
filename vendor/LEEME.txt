@@ -1,0 +1,4 @@
+supabase.js es la libreria oficial @supabase/supabase-js (version 2.99.3, licencia MIT),
+copiada tal cual desde el registro de npm: https://www.npmjs.com/package/@supabase/supabase-js
+Se guarda aqui para que la pagina no dependa de ningun servidor externo (CDN).
+No la edites. Para actualizarla: npm pack @supabase/supabase-js@VERSION y copiar dist/umd/supabase.js
